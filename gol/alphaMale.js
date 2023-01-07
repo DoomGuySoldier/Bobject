@@ -1,31 +1,31 @@
-class AlphaMale{
-    constructor(x, y){
+class AlphaMale {
+    constructor(x, y) {
         this.x = x;
         this.y = y;
         this.eatCounter = 0;
         this.withoutEat = 0;
-        this.neighbors=[
-            [this.x-1, this.y-1],
-            [this.x,   this.y-1],
-            [this.x+1, this.y-1],
-            [this.x-1, this.y],
-            [this.x+1, this.y],
-            [this.x-1, this.y+1],
-            [this.x,   this.y+1],
-            [this.x+1, this.y+1]
+        this.neighbors = [
+            [this.x - 1, this.y - 1],
+            [this.x, this.y - 1],
+            [this.x + 1, this.y - 1],
+            [this.x - 1, this.y],
+            [this.x + 1, this.y],
+            [this.x - 1, this.y + 1],
+            [this.x, this.y + 1],
+            [this.x + 1, this.y + 1]
         ]
     }
 
     updateNeighbors() {
-        this.neighbors=[
-            [this.x-1, this.y-1],
-            [this.x,   this.y-1],
-            [this.x+1, this.y-1],
-            [this.x-1, this.y],
-            [this.x+1, this.y],
-            [this.x-1, this.y+1],
-            [this.x,   this.y+1],
-            [this.x+1, this.y+1]
+        this.neighbors = [
+            [this.x - 1, this.y - 1],
+            [this.x, this.y - 1],
+            [this.x + 1, this.y - 1],
+            [this.x - 1, this.y],
+            [this.x + 1, this.y],
+            [this.x - 1, this.y + 1],
+            [this.x, this.y + 1],
+            [this.x + 1, this.y + 1]
         ];
     }
 
@@ -33,18 +33,18 @@ class AlphaMale{
         this.updateNeighbors();
         let found = [];
         // wir suchen nach leeren Feldern - Wert x
-        for(let i = 0; i<this.neighbors.length; i++) {
+        for (let i = 0; i < this.neighbors.length; i++) {
             const pos = this.neighbors[i];  //[x,y]
             let posX = pos[0];
             let posY = pos[1];
 
-            if(posX >= 0 && posX < matrix[0].length && posY >= 0 && posY < matrix.length) {
+            if (posX >= 0 && posX < matrix[0].length && posY >= 0 && posY < matrix.length) {
                 let wert = matrix[posY][posX];
-                if(wert == symbol) {
+                if (wert == symbol) {
                     found.push(pos);
                 }
             }
-            
+
         }
         return found;
     }
@@ -52,7 +52,7 @@ class AlphaMale{
     move() {
         //console.log("Grasfresser bewegung");
         let emptyFields = this.chooseCell(0);
-        if(emptyFields.length > 0) {
+        if (emptyFields.length > 0) {
             let newPos = random(emptyFields);
             let newX = newPos[0];
             let newY = newPos[1];
@@ -60,15 +60,15 @@ class AlphaMale{
             matrix[this.y][this.x] = 0;
             this.x = newX;
             this.y = newY;
-        }  
-        
+        }
+
     }
 
     eat() {
         //finde etwas zu fressen
 
         let predatorFields = this.chooseCell(3);
-        if(predatorsFields.length > 0) {
+        if (predatorsFields.length > 0) {
             let predatorPos = random(predatorFields);
             let newX = predatorPos[0];
             let newY = predatorPos[1];
@@ -77,9 +77,9 @@ class AlphaMale{
             this.x = newX;
             this.y = newY;
 
-            for(let i=0; i < predatorArr.length; i++) {
+            for (let i = 0; i < predatorArr.length; i++) {
                 let predatorObj = predatorArr[i];
-                if(predatorObj.x == newX && predatorObj.y == newY) {
+                if (predatorObj.x == newX && predatorObj.y == newY) {
                     predatorArr.splice(i, 1);
                 }
             }
@@ -95,28 +95,28 @@ class AlphaMale{
             this.die();
         }
 
-        
+
     }
 
     die() {
-        if (this.withoutEat >= 10){
+        if (this.withoutEat >= 10) {
             matrix[this.y][this.x] = 0;
             for (let i = 0; i < AlphaMaleArr.length; i++) {
                 const AlphaMaleObj = AlphaMaleArr[i];
-                if (AlphaMaleObj.x == this.x && AlphaMaleObj.y == this.y){
+                if (AlphaMaleObj.x == this.x && AlphaMaleObj.y == this.y) {
                     AlphaMaleArr.splice(i, 1);
                 }
-                
+
             }
-            
+
         }
     }
 
     mul() {
-        
-        if(this.rounds >= 10) {
+
+        if (this.rounds >= 10) {
             let emptyFields = this.chooseCell(0);
-            if(emptyFields.length > 0) {
+            if (emptyFields.length > 0) {
                 let theChosenField = random(emptyFields);
                 let newX = theChosenField[0];
                 let newY = theChosenField[1];

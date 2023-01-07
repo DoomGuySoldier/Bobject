@@ -6,28 +6,28 @@ class Grazer {
         this.withoutEat = 0;
         // this.color = "yellow";
         // this.index = 2;
-        this.neighbors=[
-            [this.x-1, this.y-1],
-            [this.x,   this.y-1],
-            [this.x+1, this.y-1],
-            [this.x-1, this.y],
-            [this.x+1, this.y],
-            [this.x-1, this.y+1],
-            [this.x,   this.y+1],
-            [this.x+1, this.y+1]
+        this.neighbors = [
+            [this.x - 1, this.y - 1],
+            [this.x, this.y - 1],
+            [this.x + 1, this.y - 1],
+            [this.x - 1, this.y],
+            [this.x + 1, this.y],
+            [this.x - 1, this.y + 1],
+            [this.x, this.y + 1],
+            [this.x + 1, this.y + 1]
         ]
     }
 
     updateNeighbors() {
-        this.neighbors=[
-            [this.x-1, this.y-1],
-            [this.x,   this.y-1],
-            [this.x+1, this.y-1],
-            [this.x-1, this.y],
-            [this.x+1, this.y],
-            [this.x-1, this.y+1],
-            [this.x,   this.y+1],
-            [this.x+1, this.y+1]
+        this.neighbors = [
+            [this.x - 1, this.y - 1],
+            [this.x, this.y - 1],
+            [this.x + 1, this.y - 1],
+            [this.x - 1, this.y],
+            [this.x + 1, this.y],
+            [this.x - 1, this.y + 1],
+            [this.x, this.y + 1],
+            [this.x + 1, this.y + 1]
         ];
     }
 
@@ -35,25 +35,25 @@ class Grazer {
         this.updateNeighbors();
         let found = [];
         // wir suchen nach leeren Feldern - Wert x
-        for(let i = 0; i<this.neighbors.length; i++) {
+        for (let i = 0; i < this.neighbors.length; i++) {
             const pos = this.neighbors[i];  //[x,y]
             let posX = pos[0];
             let posY = pos[1];
 
-            if(posX >= 0 && posX < matrix[0].length && posY >= 0 && posY < matrix.length) {
+            if (posX >= 0 && posX < matrix[0].length && posY >= 0 && posY < matrix.length) {
                 let wert = matrix[posY][posX];
-                if(wert == symbol) {
+                if (wert == symbol) {
                     found.push(pos);
                 }
             }
-            
+
         }
         return found;
     }
     move() {
         //console.log("Grasfresser bewegung");
         let emptyFields = this.chooseCell(0);
-        if(emptyFields.length > 0) {
+        if (emptyFields.length > 0) {
             let newPos = random(emptyFields);
             let newX = newPos[0];
             let newY = newPos[1];
@@ -61,15 +61,15 @@ class Grazer {
             matrix[this.y][this.x] = 0;
             this.x = newX;
             this.y = newY;
-        }  
-        
+        }
+
     }
 
     eat() {
         //finde etwas zu fressen
 
         let grassFields = this.chooseCell(1);
-        if(grassFields.length > 0) {
+        if (grassFields.length > 0) {
             let grassPos = random(grassFields);
             let newX = grassPos[0];
             let newY = grassPos[1];
@@ -78,9 +78,9 @@ class Grazer {
             this.x = newX;
             this.y = newY;
 
-            for(let i=0; i < grassArr.length; i++) {
+            for (let i = 0; i < grassArr.length; i++) {
                 let grasObj = grassArr[i];
-                if(grasObj.x == newX && grasObj.y == newY) {
+                if (grasObj.x == newX && grasObj.y == newY) {
                     grassArr.splice(i, 1);
                 }
             }
@@ -96,28 +96,28 @@ class Grazer {
             this.die();
         }
 
-        
+
     }
 
     die() {
-        if (this.withoutEat >= 5){
+        if (this.withoutEat >= 5) {
             matrix[this.y][this.x] = 0;
             for (let i = 0; i < grazerArr.length; i++) {
                 const grazerObj = grazerArr[i];
-                if (grazerObj.x == this.x && grazerObj.y == this.y){
+                if (grazerObj.x == this.x && grazerObj.y == this.y) {
                     grazerArr.splice(i, 1);
                 }
-                
+
             }
-            
+
         }
     }
 
     mul() {
-        
-        if(this.rounds >= 5) {
+
+        if (this.rounds >= 5) {
             let emptyFields = this.chooseCell(0);
-            if(emptyFields.length > 0) {
+            if (emptyFields.length > 0) {
                 let theChosenField = random(emptyFields);
                 let newX = theChosenField[0];
                 let newY = theChosenField[1];
