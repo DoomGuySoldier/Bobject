@@ -1,4 +1,4 @@
-class Predator {
+class Predator extends livingCreatures{
     constructor(x, y) {
         this.x = x;
         this.y = y;
