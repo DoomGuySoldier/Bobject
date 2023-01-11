@@ -1,5 +1,6 @@
 class Grass extends livingCreatures{
     constructor(x, y) {
+        super();
         this.x = x;
         this.y = y;
         this.rounds = 0;
