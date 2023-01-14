@@ -7,3 +7,10 @@ module.exports = class Square{
         return this.side * this.side;
     }
 }
+
+function myTest(){
+    console.log("testing");
+}
+
+
+// module.exports = {Square, myTest}
