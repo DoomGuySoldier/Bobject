@@ -68,8 +68,10 @@ function setup() {
 
 }
 
+setInterval(updater(),1000);
+
 //unendlich wiederholdend aufgerufen
-function draw() {
+function updater() {
 
    //console.log(grassArr);
    //update GrassObj
