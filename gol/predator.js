@@ -1,4 +1,4 @@
-class Predator extends livingCreatures{
+module.exports = class Predator extends livingCreatures{
     constructor(x, y) {
         super();
         this.x = x;
