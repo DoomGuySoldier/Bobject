@@ -1,3 +1,5 @@
+const livingCreatures = require("./livingCreatures.js");
+
 module.exports = class Baneling extends livingCreatures{
     constructor(x, y) {
         super();

@@ -1,3 +1,5 @@
+const livingCreatures = require("./livingCreatures.js");
+
 module.exports = class Grazer extends livingCreatures{
     constructor(x, y) {
         super();
@@ -119,7 +121,7 @@ module.exports = class Grazer extends livingCreatures{
         if (this.rounds >= 5) {
             let emptyFields = this.chooseCell(0);
             if (emptyFields.length > 0) {
-                let theChosenField = random(emptyFields);
+                let theChosenField = Math.floor(Math.random() * emptyFields);
                 let newX = theChosenField[0];
                 let newY = theChosenField[1];
                 let grazerObj = new Grazer(newX, newY);

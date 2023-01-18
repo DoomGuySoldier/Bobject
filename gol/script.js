@@ -8,18 +8,18 @@ let matrix = [
    [1, 1, 0, 0, 0]
 ];
 
-function createRandomMatrix(w, h) {
-   let matrix = [];
-   for (let y = 0; y < h; y++) {
-      let array = [];
-      matrix[y] = array;
-      for (let x = 0; x < w; x++) {
-         let z = random(0, 4);
-         matrix[y][x] = Math.floor(z);
-      }
-   }
-   return matrix;
-}
+// function createRandomMatrix(w, h) {
+//    let matrix = [];
+//    for (let y = 0; y < h; y++) {
+//       let array = [];
+//       matrix[y] = array;
+//       for (let x = 0; x < w; x++) {
+//          let z = random(0, 4);
+//          matrix[y][x] = Math.floor(z);
+//       }
+//    }
+//    return matrix;
+// }
 
 // let x = random(500)
 // let y = random(500)
@@ -68,7 +68,6 @@ function setup() {
 
 }
 
-setInterval(updater(),1000);
 
 //unendlich wiederholdend aufgerufen
 function updater() {

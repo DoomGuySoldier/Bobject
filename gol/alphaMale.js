@@ -1,3 +1,5 @@
+const livingCreatures = require("./livingCreatures.js");
+
 module.exports = class AlphaMale extends livingCreatures{
     constructor(x, y) {
         super();
@@ -118,7 +120,7 @@ module.exports = class AlphaMale extends livingCreatures{
         if (this.rounds >= 10) {
             let emptyFields = this.chooseCell(0);
             if (emptyFields.length > 0) {
-                let theChosenField = random(emptyFields);
+                let theChosenField = Math.floor(Math.random() * emptyFields);
                 let newX = theChosenField[0];
                 let newY = theChosenField[1];
                 let AlphaMaleObj = new AlphaMale(newX, newY);

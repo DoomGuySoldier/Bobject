@@ -1,3 +1,5 @@
+const livingCreatures = require("./livingCreatures.js");
+
 module.exports = class Grass extends livingCreatures{
     constructor(x, y) {
         super();
@@ -41,7 +43,7 @@ module.exports = class Grass extends livingCreatures{
         if (this.rounds >= 4) {
             let emptyFields = this.chooseCell(0);
             if (emptyFields.length > 0) {
-                let theChosenField = random(emptyFields);
+                let theChosenField = Math.floor(Math.random() * emptyFields);
                 let newX = theChosenField[0];
                 let newY = theChosenField[1];
                 let grasObj = new Grass(newX, newY);
