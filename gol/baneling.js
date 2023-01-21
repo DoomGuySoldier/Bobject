@@ -2,7 +2,7 @@ const livingCreatures = require("./livingCreatures.js");
 
 module.exports = class Baneling extends livingCreatures{
     constructor(x, y) {
-        super();
+        super(x, y);
         this.x = x;
         this.y = y;
         this.eatCounter = 0;
@@ -56,7 +56,7 @@ module.exports = class Baneling extends livingCreatures{
         //console.log("Grasfresser bewegung");
         let emptyFields = this.chooseCell(0);
         if (emptyFields.length > 0) {
-            let newPos = random(emptyFields);
+            let newPos = emptyFields[Math.floor(Math.random() * emptyFields.length)]
             let newX = newPos[0];
             let newY = newPos[1];
             matrix[newY][newX] = 5;
@@ -72,7 +72,7 @@ module.exports = class Baneling extends livingCreatures{
 
         let AlphaMaleFields = this.chooseCell(4);
         if (AlphaMaleFields.length > 0) {
-            let AlphaMalePos = random(AlphaMaleFields);
+            let AlphaMalePos = AlphaMaleFields[Math.floor(Math.random() * AlphaMaleFields.length)] //random(AlphaMaleFields);
             let newX = AlphaMalePos[0];
             let newY = AlphaMalePos[1];
             matrix[newY][newX] = 5;

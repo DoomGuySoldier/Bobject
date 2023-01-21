@@ -2,7 +2,7 @@ const livingCreatures = require("./livingCreatures.js");
 
 module.exports = class Predator extends livingCreatures{
     constructor(x, y) {
-        super();
+        super(x, y);
         this.x = x;
         this.y = y;
         this.eatCounter = 0;
@@ -56,7 +56,7 @@ module.exports = class Predator extends livingCreatures{
         //console.log("Grasfresser bewegung");
         let emptyFields = this.chooseCell(0);
         if (emptyFields.length > 0) {
-            let newPos = random(emptyFields);
+            let newPos = emptyFields[Math.floor(Math.random() * emptyFields.length)]
             let newX = newPos[0];
             let newY = newPos[1];
             matrix[newY][newX] = 3;
@@ -72,7 +72,7 @@ module.exports = class Predator extends livingCreatures{
 
         let grazerFields = this.chooseCell(2);
         if (grazerFields.length > 0) {
-            let grazerPos = random(grazerFields);
+            let grazerPos = grazerFields[Math.floor(Math.random() * grazerFields.length)] //random(grazerFields);
             let newX = grazerPos[0];
             let newY = grazerPos[1];
             matrix[newY][newX] = 3;
@@ -120,7 +120,7 @@ module.exports = class Predator extends livingCreatures{
         if (this.rounds >= 5) {
             let emptyFields = this.chooseCell(0);
             if (emptyFields.length > 0) {
-                let theChosenField = Math.floor(Math.random() * emptyFields);
+                let theChosenField = emptyFields[Math.floor(Math.random() * emptyFields.length)]
                 let newX = theChosenField[0];
                 let newY = theChosenField[1];
                 let predatorObj = new Predator(newX, newY);

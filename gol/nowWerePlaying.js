@@ -5,7 +5,7 @@ const Baneling = require("./baneling.js");
 const AlphaMale = require("./alphaMale.js");
 
 
-let matrix = [
+matrix = [
     [0, 0, 1, 0, 0],
     [1, 0, 0, 0, 0],
     [0, 1, 0, 3, 0],
@@ -15,30 +15,53 @@ let matrix = [
     [1, 1, 0, 0, 0]
 ];
 
-// function createRandomMatrix(w, h) {
-//     let matrix = [];
-//     for (let y = 0; y < h; y++) {
-//         let array = [];
-//         matrix[y] = array;
-//         for (let x = 0; x < w; x++) {
-//             matrix[y][x] = Math.floor(Math.random() * 5);
-//         }
-//     }
-//     return matrix;
-// }
+function createRandomMatrix(w, h) {
+    let matrix = [];
+    for (let y = 0; y < h; y++) {
+        let array = [];
+        matrix[y] = array;
+        for (let x = 0; x < w; x++) {
+            matrix[y][x] = Math.floor(Math.random() * 5);
+        }
+    }
+    return matrix;
+}
 
-let side = 50;
-let fr = 5;
+//let side = 50;
+//let fr = 5;
 
 //Lebewesenliste
-asgrassArr = [];
+grassArr = [];
 grazerArr = [];
 predatorArr = [];
 AlphaMaleArr = [];
 BanelingArr = [];
 
 function gameStarter() {
-    console.log(matrix);
+    matrix = createRandomMatrix(50, 50);
+
+    for(let y in matrix){
+        y = parseInt(y);
+        for(let x in matrix[y]){
+            x = parseInt(x);
+            if (matrix[y][x] == 1){
+                let grassObj = new Grass(x, y);
+                grassArr.push(grassObj);
+            } else if (matrix[y][x] == 2){
+                let grazerObj = new Grazer(x, y);
+                grazerArr.push(grazerObj);
+            } else if (matrix[y][x] == 3){
+                let predatorObj = new Predator(x, y);
+                predatorArr.push(predatorObj);
+            } else if (matrix[y][x] == 4){
+                let alphaMaleObj = new AlphaMale(x, y);
+                AlphaMaleArr.push(alphaMaleObj);
+            } else if (matrix[y][x] == 5){
+                let banelingObj = new Baneling(x, y);
+                BanelingArr.push(banelingObj);
+            }
+        }
+    }
 }
 
 //unendlich wiederholdend aufgerufen
@@ -46,8 +69,8 @@ function updater() {
 
     for (let i in grassArr) {
         i = parseInt(i);
-        let grasObj = grassArr[i];
-        grasObj.mul();
+        let grassObj = grassArr[i];
+        grassObj.mul();
     }
 
     for (let i in grazerArr) {
@@ -80,10 +103,7 @@ function updater() {
     console.log(matrix);
 }
 
-
-
 gameStarter();
 setInterval(function () {
     updater();
 }, 100);
-updater();
