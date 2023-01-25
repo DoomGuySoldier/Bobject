@@ -4,6 +4,8 @@ const Predator = require("./predator.js");
 const Baneling = require("./baneling.js");
 const AlphaMale = require("./alphaMale.js");
 
+const express = require("express");
+const app = express();
 
 matrix = [
     [0, 0, 1, 0, 0],
@@ -40,23 +42,23 @@ BanelingArr = [];
 function gameStarter() {
     matrix = createRandomMatrix(50, 50);
 
-    for(let y in matrix){
+    for (let y in matrix) {
         y = parseInt(y);
-        for(let x in matrix[y]){
+        for (let x in matrix[y]) {
             x = parseInt(x);
-            if (matrix[y][x] == 1){
+            if (matrix[y][x] == 1) {
                 let grassObj = new Grass(x, y);
                 grassArr.push(grassObj);
-            } else if (matrix[y][x] == 2){
+            } else if (matrix[y][x] == 2) {
                 let grazerObj = new Grazer(x, y);
                 grazerArr.push(grazerObj);
-            } else if (matrix[y][x] == 3){
+            } else if (matrix[y][x] == 3) {
                 let predatorObj = new Predator(x, y);
                 predatorArr.push(predatorObj);
-            } else if (matrix[y][x] == 4){
+            } else if (matrix[y][x] == 4) {
                 let alphaMaleObj = new AlphaMale(x, y);
                 AlphaMaleArr.push(alphaMaleObj);
-            } else if (matrix[y][x] == 5){
+            } else if (matrix[y][x] == 5) {
                 let banelingObj = new Baneling(x, y);
                 BanelingArr.push(banelingObj);
             }
@@ -103,7 +105,12 @@ function updater() {
     console.log(matrix);
 }
 
-gameStarter();
-setInterval(function () {
-    updater();
-}, 100);
+
+
+app.listen(3000, function () {
+    console.log("Terminator activated");
+    gameStarter();
+    setInterval(function () {
+        updater();
+    }, 100);
+});
