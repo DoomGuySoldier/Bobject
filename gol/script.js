@@ -1,118 +1,45 @@
-let matrix = [
-   [0, 0, 1, 0, 0],
-   [1, 0, 0, 0, 0],
-   [0, 1, 0, 3, 0],
-   [0, 0, 1, 0, 0],
-   [1, 1, 0, 0, 0],
-   [1, 1, 0, 2, 0],
-   [1, 1, 0, 0, 0]
-];
+let matrix = [[]];
+let side = 10;
+let matrixSize = 50;
+let isRaining = false;
 
-// function createRandomMatrix(w, h) {
-//    let matrix = [];
-//    for (let y = 0; y < h; y++) {
-//       let array = [];
-//       matrix[y] = array;
-//       for (let x = 0; x < w; x++) {
-//          let z = random(0, 4);
-//          matrix[y][x] = Math.floor(z);
-//       }
-//    }
-//    return matrix;
-// }
+let socket = io();
 
-// let x = random(500)
-// let y = random(500)
-// let z = random(30)
+function main(){
+   socket.on("send matrix", drawMatrix);
+   socket.on("isRaining", Nestle);
 
-let side = 50;
-let fr = 5;
+   let MyKillBtn = document.getElementById("killButton");
+   MyKillBtn.addEventListener("click", kamikaze);
+}
 
-//Lebewesenliste
-let grassArr = [];
-let grazerArr = [];
-let predatorArr = [];
-let AlphaMaleArr = [];
-let BanelingArr = [];
+function Nestle(data){
+   console.log("Regnet es: ", data);
+   isRaining = data;
+}
 
+function kamikaze(event){
+   console.log("Japse unterwegs...");
+   socket.emit("suicide", 10);
+}
 
 // einmal aufgerufen
 function setup() {
-   matrix = createRandomMatrix(50, 50);
-   createCanvas(matrix[0].length * side + 1, matrix.length * side + 1);
-   //background("#acacac");
-   frameRate(3);
-
-
-   let grasObj1 = new Grass(1, 2);
-   // console.log(grasObj1);
-   // console.log(grasObj1.chooseCell(1));
-
-
-   let arr = [];
-   for (let y = 0; y < matrix.length; y++) {
-      for (let x = 0; x < matrix[y].length; x++) {
-         if (matrix[y][x] == 1) {
-            let grasObj = new Grass(x, y);
-            grassArr.push(grasObj);
-            //console.log(grasObj);
-         } else if (matrix[y][x] == 2) {
-            let grazerObj = new Grazer(x, y);
-            grazerArr.push(grazerObj);
-         } else if (matrix[y][x] == 3) {
-            let predatorObj = new Predator(x, y);
-            predatorArr.push(predatorObj);
-         }
-      }
-   }
-
+   createCanvas(matrixSize * side + 1, matrixSize * side + 1);
+   background("#acacac");
 }
 
-
 //unendlich wiederholdend aufgerufen
-function updater() {
-
-   //console.log(grassArr);
-   //update GrassObj
-   for (let i in grassArr) {
-      i = parseInt(i);
-      let grasObj = grassArr[i];
-      grasObj.mul();
-   }
-
-   for (let i in grazerArr) {
-      i = parseInt(i);
-      let grazerObj = grazerArr[i];
-      grazerObj.eat();
-      grazerObj.mul();
-   }
-
-   for (let i in predatorArr) {
-      i = parseInt(i);
-      let predator = predatorArr[i];
-      predator.eat();
-      predator.mul();
-   }
-
-   for (let i in AlphaMaleArr) {
-      i = parseInt(i);
-      let AlphaMale = AlphaMaleArr[i];
-      AlphaMale.eat();
-      AlphaMale.mul();
-   }
-
-   for (let i in BanelingArr) {
-      i = parseInt(i);
-      let Baneling = BanelingArr[i];
-      Baneling.suicide();
-   }
-
+function drawMatrix(matrix) {
    for (let y = 0; y < matrix.length; y++) {
       for (let x = 0; x < matrix[y].length; x++) {
          if (matrix[y][x] == 0) {
             fill('white');
          } else if (matrix[y][x] == 1) {
             fill('green');
+            if(isRaining){
+               fill("blue");
+            }
          } else if (matrix[y][x] == 2) {
             fill('yellow');
          } else if (matrix[y][x] == 3) {
@@ -125,7 +52,8 @@ function updater() {
          //  }
 
          rect(x * side, y * side, side, side);
-
       }
    }
 }
+
+window.onload = main;

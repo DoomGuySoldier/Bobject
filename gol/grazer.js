@@ -49,7 +49,6 @@ module.exports = class Grazer extends livingCreatures{
                     found.push(pos);
                 }
             }
-
         }
         return found;
     }
@@ -65,12 +64,10 @@ module.exports = class Grazer extends livingCreatures{
             this.x = newX;
             this.y = newY;
         }
-
     }
 
     eat() {
         //finde etwas zu fressen
-
         let grassFields = this.chooseCell(1);
         if (grassFields.length > 0) {
             let grassPos = grassFields[Math.floor(Math.random() * grassFields.length)]
@@ -87,7 +84,6 @@ module.exports = class Grazer extends livingCreatures{
                     grassArr.splice(i, 1);
                 }
             }
-
             // eatCounter erhöhen
             this.eatCounter++;
             this.withoutEat = 0;
@@ -98,8 +94,6 @@ module.exports = class Grazer extends livingCreatures{
             this.move();
             this.die();
         }
-
-
     }
 
     die() {
@@ -110,9 +104,7 @@ module.exports = class Grazer extends livingCreatures{
                 if (grazerObj.x == this.x && grazerObj.y == this.y) {
                     grazerArr.splice(i, 1);
                 }
-
             }
-
         }
     }
 

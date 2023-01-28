@@ -7,6 +7,15 @@ const AlphaMale = require("./alphaMale.js");
 const express = require("express");
 const app = express();
 
+let httpServer = require("http").Server(app);
+let { Server } = require("socket.io");
+const io = new Server(httpServer);
+
+app.use(express.static("./"));
+app.get("./", function (req, resp) {
+    resp.redirect("index.html");
+});
+
 matrix = [
     [0, 0, 1, 0, 0],
     [1, 0, 0, 0, 0],
@@ -33,6 +42,7 @@ function createRandomMatrix(w, h) {
 //let fr = 5;
 
 //Lebewesenliste
+let isRaining = false;
 grassArr = [];
 grazerArr = [];
 predatorArr = [];
@@ -101,16 +111,29 @@ function updater() {
         let Baneling = BanelingArr[i];
         Baneling.suicide();
     }
-
-    console.log(matrix);
+    console.log("send matrix");
+    io.emit("send matrix", matrix);
+    //console.log(matrix);
 }
+io.on("connection", function (socket) {
+    console.log("client ws connection established...");
+    io.emit("send matrix", matrix);
 
+    socket.on("suicide", function(data){
+        console.log("client wants death and destruction", data);
+        
+    })
+})
 
-
-app.listen(3000, function () {
+httpServer.listen(3000, function () {
     console.log("Terminator activated");
     gameStarter();
     setInterval(function () {
         updater();
-    }, 100);
+    }, 1000);
+    setInterval(function(){
+        isRaining = !isRaining;
+        io.emit("isRaining", isRaining);
+        console.log("Regnet es: ", isRaining);
+    }, 5000)
 });
