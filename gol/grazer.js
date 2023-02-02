@@ -1,3 +1,4 @@
+const { CELL: { EMPTY, GRASS, GRAZER } } = require("./constants.js");
 const livingCreatures = require("./livingCreatures.js");
 
 module.exports = class Grazer extends livingCreatures{
@@ -52,15 +53,16 @@ module.exports = class Grazer extends livingCreatures{
         }
         return found;
     }
+
     move() {
         //console.log("Grasfresser bewegung");
-        let emptyFields = this.chooseCell(0);
+        let emptyFields = this.chooseCell(EMPTY);
         if (emptyFields.length > 0) {
             let newPos = emptyFields[Math.floor(Math.random() * emptyFields.length)]
             let newX = newPos[0];
             let newY = newPos[1];
-            matrix[newY][newX] = 2;
-            matrix[this.y][this.x] = 0;
+            matrix[newY][newX] = GRAZER;
+            matrix[this.y][this.x] = EMPTY;
             this.x = newX;
             this.y = newY;
         }
@@ -68,13 +70,13 @@ module.exports = class Grazer extends livingCreatures{
 
     eat() {
         //finde etwas zu fressen
-        let grassFields = this.chooseCell(1);
+        let grassFields = this.chooseCell(GRASS);
         if (grassFields.length > 0) {
             let grassPos = grassFields[Math.floor(Math.random() * grassFields.length)]
             let newX = grassPos[0];
             let newY = grassPos[1];
-            matrix[newY][newX] = 2;
-            matrix[this.y][this.x] = 0;
+            matrix[newY][newX] = GRAZER;
+            matrix[this.y][this.x] = EMPTY;
             this.x = newX;
             this.y = newY;
 
@@ -98,7 +100,7 @@ module.exports = class Grazer extends livingCreatures{
 
     die() {
         if (this.withoutEat >= 5) {
-            matrix[this.y][this.x] = 0;
+            matrix[this.y][this.x] = EMPTY;
             for (let i = 0; i < grazerArr.length; i++) {
                 const grazerObj = grazerArr[i];
                 if (grazerObj.x == this.x && grazerObj.y == this.y) {
@@ -109,16 +111,15 @@ module.exports = class Grazer extends livingCreatures{
     }
 
     mul() {
-
         if (this.rounds >= 5) {
-            let emptyFields = this.chooseCell(0);
+            let emptyFields = this.chooseCell(EMPTY);
             if (emptyFields.length > 0) {
                 let theChosenField =  emptyFields[Math.floor(Math.random() * emptyFields.length)] //Math.floor(Math.random() * emptyFields);
                 let newX = theChosenField[0];
                 let newY = theChosenField[1];
                 let grazerObj = new Grazer(newX, newY);
                 grazerArr.push(grazerObj);
-                matrix[newY][newX] = 2;
+                matrix[newY][newX] = GRAZER;
             }
         }
     }

@@ -1,3 +1,8 @@
+const {
+    CELL: { EMPTY, GRASS, GRAZER, PREDATOR, ALPHAMALE, BANELING },
+    WEATHER: { SUNNY, CLOUDY, HEATWAVE, RAINY }
+} = require("./constants.js");
+
 const Grass = require("./grass.js");
 const Grazer = require("./grazer.js");
 const Predator = require("./predator.js");
@@ -16,25 +21,31 @@ app.get("./", function (req, resp) {
     resp.redirect("index.html");
 });
 
-matrix = [
-    [0, 0, 1, 0, 0],
-    [1, 0, 0, 0, 0],
-    [0, 1, 0, 3, 0],
-    [0, 0, 1, 0, 0],
-    [1, 1, 0, 0, 0],
-    [1, 1, 0, 2, 0],
-    [1, 1, 0, 0, 0]
-];
+// matrix = [
+//     [0, 0, 1, 0, 0],
+//     [1, 0, 0, 0, 0],
+//     [0, 1, 0, 3, 0],
+//     [0, 0, 1, 0, 0],
+//     [1, 1, 0, 0, 0],
+//     [1, 1, 0, 2, 0],
+//     [1, 1, 0, 0, 0]
+// ];
+
+const CELLS = [EMPTY, GRASS, GRAZER, PREDATOR, ALPHAMALE, BANELING];
+const WEATHER_STATES = [SUNNY, CLOUDY, HEATWAVE, RAINY];
 
 function createRandomMatrix(w, h) {
     let matrix = [];
+
     for (let y = 0; y < h; y++) {
         let array = [];
         matrix[y] = array;
         for (let x = 0; x < w; x++) {
-            matrix[y][x] = Math.floor(Math.random() * 5);
+            const i = Math.floor(Math.random() * (CELLS.length-2));
+            matrix[y][x] = CELLS[i];
         }
     }
+
     return matrix;
 }
 
@@ -42,12 +53,17 @@ function createRandomMatrix(w, h) {
 //let fr = 5;
 
 //Lebewesenliste
-let isRaining = false;
+//let isRaining = false;
+let weatherState = SUNNY;
 grassArr = [];
 grazerArr = [];
 predatorArr = [];
 AlphaMaleArr = [];
 BanelingArr = [];
+
+function getWeatherState() {
+    return WEATHER_STATES[Math.floor(Math.random() * WEATHER_STATES.length)];
+}
 
 function gameStarter() {
     matrix = createRandomMatrix(50, 50);
@@ -56,19 +72,19 @@ function gameStarter() {
         y = parseInt(y);
         for (let x in matrix[y]) {
             x = parseInt(x);
-            if (matrix[y][x] == 1) {
+            if (matrix[y][x] == GRASS) {
                 let grassObj = new Grass(x, y);
                 grassArr.push(grassObj);
-            } else if (matrix[y][x] == 2) {
+            } else if (matrix[y][x] == GRAZER) {
                 let grazerObj = new Grazer(x, y);
                 grazerArr.push(grazerObj);
-            } else if (matrix[y][x] == 3) {
+            } else if (matrix[y][x] == PREDATOR) {
                 let predatorObj = new Predator(x, y);
                 predatorArr.push(predatorObj);
-            } else if (matrix[y][x] == 4) {
+            } else if (matrix[y][x] == ALPHAMALE) {
                 let alphaMaleObj = new AlphaMale(x, y);
                 AlphaMaleArr.push(alphaMaleObj);
-            } else if (matrix[y][x] == 5) {
+            } else if (matrix[y][x] == BANELING) {
                 let banelingObj = new Baneling(x, y);
                 BanelingArr.push(banelingObj);
             }
@@ -78,43 +94,48 @@ function gameStarter() {
 
 //unendlich wiederholdend aufgerufen
 function updater() {
+    // for (let i in grassArr) {
+    //     i = parseInt(i);
+    //     let grassObj = grassArr[i];
+    //     grassObj.mul();
+    // }
 
-    for (let i in grassArr) {
-        i = parseInt(i);
-        let grassObj = grassArr[i];
-        grassObj.mul();
+    for (let grass of grassArr) {
+        grass.mul();
     }
 
-    for (let i in grazerArr) {
-        i = parseInt(i);
-        let grazerObj = grazerArr[i];
-        grazerObj.eat();
-        grazerObj.mul();
+    for (let grazer of grazerArr) {
+        // i = parseInt(i);
+        // let grazerObj = grazerArr[i];
+        grazer.eat();
+        grazer.mul();
     }
 
-    for (let i in predatorArr) {
-        i = parseInt(i);
-        let predator = predatorArr[i];
+    for (let predator of predatorArr) {
+        // i = parseInt(i);
+        // let predator = predatorArr[i];
         predator.eat();
         predator.mul();
     }
 
-    for (let i in AlphaMaleArr) {
-        i = parseInt(i);
-        let AlphaMale = AlphaMaleArr[i];
-        AlphaMale.eat();
-        AlphaMale.mul();
+    for (let alphaMale of AlphaMaleArr) {
+        // i = parseInt(i);
+        // let AlphaMale = AlphaMaleArr[i];
+        alphaMale.eat();
+        alphaMale.mul();
     }
 
-    for (let i in BanelingArr) {
-        i = parseInt(i);
-        let Baneling = BanelingArr[i];
-        Baneling.suicide();
+    for (let baneling of BanelingArr) {
+        // i = parseInt(i);
+        // let baneling = BanelingArr[i];
+        baneling.suicide();
     }
+
     console.log("send matrix");
     io.emit("send matrix", matrix);
     //console.log(matrix);
 }
+
 io.on("connection", function (socket) {
     console.log("client ws connection established...");
     io.emit("send matrix", matrix);
@@ -127,13 +148,20 @@ io.on("connection", function (socket) {
 
 httpServer.listen(3000, function () {
     console.log("Terminator activated");
+    
     gameStarter();
+    
     setInterval(function () {
         updater();
     }, 1000);
+
     setInterval(function(){
-        isRaining = !isRaining;
-        io.emit("isRaining", isRaining);
-        console.log("Regnet es: ", isRaining);
+        // isRaining = !isRaining;
+        // io.emit("isRaining", isRaining);
+        // console.log("Regnet es: ", isRaining);
+
+        weatherState = getWeatherState();
+        io.emit("weatherState", weatherState);
+        console.log("es ist: ", weatherState);
     }, 5000)
 });

@@ -67,7 +67,7 @@ module.exports = class Baneling extends livingCreatures{
 
     }
 
-    suiciede() {
+    suicide() {
         //finde etwas zu fressen
 
         let AlphaMaleFields = this.chooseCell(4);

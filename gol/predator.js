@@ -1,3 +1,4 @@
+const { CELL: { EMPTY, GRAZER, PREDATOR } } = require("./constants.js");
 const livingCreatures = require("./livingCreatures.js");
 
 module.exports = class Predator extends livingCreatures{
@@ -47,20 +48,19 @@ module.exports = class Predator extends livingCreatures{
                     found.push(pos);
                 }
             }
-
         }
         return found;
     }
 
     move() {
         //console.log("Grasfresser bewegung");
-        let emptyFields = this.chooseCell(0);
+        let emptyFields = this.chooseCell(EMPTY);
         if (emptyFields.length > 0) {
             let newPos = emptyFields[Math.floor(Math.random() * emptyFields.length)]
             let newX = newPos[0];
             let newY = newPos[1];
-            matrix[newY][newX] = 3;
-            matrix[this.y][this.x] = 0;
+            matrix[newY][newX] = PREDATOR;
+            matrix[this.y][this.x] = EMPTY;
             this.x = newX;
             this.y = newY;
         }
@@ -70,13 +70,13 @@ module.exports = class Predator extends livingCreatures{
     eat() {
         //finde etwas zu fressen
 
-        let grazerFields = this.chooseCell(2);
+        let grazerFields = this.chooseCell(GRAZER);
         if (grazerFields.length > 0) {
             let grazerPos = grazerFields[Math.floor(Math.random() * grazerFields.length)] //random(grazerFields);
             let newX = grazerPos[0];
             let newY = grazerPos[1];
-            matrix[newY][newX] = 3;
-            matrix[this.y][this.x] = 0;
+            matrix[newY][newX] = PREDATOR;
+            matrix[this.y][this.x] = EMPTY;
             this.x = newX;
             this.y = newY;
 
@@ -103,7 +103,7 @@ module.exports = class Predator extends livingCreatures{
 
     die() {
         if (this.withoutEat >= 8) {
-            matrix[this.y][this.x] = 0;
+            matrix[this.y][this.x] = EMPTY;
             for (let i = 0; i < predatorArr.length; i++) {
                 const predatorObj = predatorArr[i];
                 if (predatorObj.x == this.x && predatorObj.y == this.y) {
@@ -118,14 +118,14 @@ module.exports = class Predator extends livingCreatures{
     mul() {
 
         if (this.rounds >= 5) {
-            let emptyFields = this.chooseCell(0);
+            let emptyFields = this.chooseCell(EMPTY);
             if (emptyFields.length > 0) {
                 let theChosenField = emptyFields[Math.floor(Math.random() * emptyFields.length)]
                 let newX = theChosenField[0];
                 let newY = theChosenField[1];
                 let predatorObj = new Predator(newX, newY);
                 predatorArr.push(predatorObj);
-                matrix[newY][newX] = 3;
+                matrix[newY][newX] = PREDATOR;
             }
         }
     }
