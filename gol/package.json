@@ -4,6 +4,7 @@
   "description": "Hunger Games",
   "main": "nowWerePlaying.js",
   "scripts": {
+    "start": "node nowWerePlaying.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Rick Sanchez",
