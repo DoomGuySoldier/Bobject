@@ -1,3 +1,4 @@
+const { CELL: { EMPTY, BANELING, ALPHAMALE } } = require("./constants.js");
 const livingCreatures = require("./livingCreatures.js");
 
 module.exports = class Baneling extends livingCreatures{
@@ -5,7 +6,6 @@ module.exports = class Baneling extends livingCreatures{
         super(x, y);
         this.x = x;
         this.y = y;
-        this.eatCounter = 0;
         this.withoutEat = 0;
         this.neighbors = [
             [this.x - 1, this.y - 1],
@@ -54,69 +54,59 @@ module.exports = class Baneling extends livingCreatures{
 
     move() {
         //console.log("Grasfresser bewegung");
-        let emptyFields = this.chooseCell(0);
+        let emptyFields = this.chooseCell(EMPTY);
         if (emptyFields.length > 0) {
             let newPos = emptyFields[Math.floor(Math.random() * emptyFields.length)]
             let newX = newPos[0];
             let newY = newPos[1];
-            matrix[newY][newX] = 5;
-            matrix[this.y][this.x] = 0;
+            matrix[newY][newX] = BANELING;
+            matrix[this.y][this.x] = EMPTY;
             this.x = newX;
             this.y = newY;
         }
-
     }
 
     suicide() {
         //finde etwas zu fressen
-
-        let AlphaMaleFields = this.chooseCell(4);
+        let AlphaMaleFields = this.chooseCell(ALPHAMALE);
         if (AlphaMaleFields.length > 0) {
             let AlphaMalePos = AlphaMaleFields[Math.floor(Math.random() * AlphaMaleFields.length)] //random(AlphaMaleFields);
             let newX = AlphaMalePos[0];
             let newY = AlphaMalePos[1];
-            matrix[newY][newX] = 5;
-            matrix[this.y][this.x] = 0;
+            matrix[newY][newX] = EMPTY;
+            matrix[this.y][this.x] = EMPTY;
             this.x = newX;
             this.y = newY;
 
-            for (let i = 0; i < AlphaMaleArr.length; i++) {
-                let AlphaMaleObj = AlphaMaleArr[i];
-                if (AlphaMaleObj.x == newX && AlphaMaleObj.y == newY) {
-                    for (let i = 0; this.neighbors.length >= 8; i++) {
-                        AlphaMaleArr.splice(i, 1);
-                        grassArr.splice(i, 1);
-                        grazerArr.splice(i, 1);
-                        predatorArr.splice(i, 1);
-                    }
-                }
-            }
+            // for (let i = 0; i < AlphaMaleArr.length; i++) {
+            //     let AlphaMaleObj = AlphaMaleArr[i];
+            //     if (AlphaMaleObj.x == newX && AlphaMaleObj.y == newY) {
+            //         for (let i = 0; this.neighbors.length >= 8; i++) {
+            //             AlphaMaleArr.splice(i, 1);
+            //             //grassArr.splice(i, 1);
+            //             //grazerArr.splice(i, 1);
+            //             //predatorArr.splice(i, 1);
+            //         }
+            //     }
+            // }
 
-            // eatCounter erhöhen
-            this.eatCounter++;
-            this.withoutEat = 0;
+
         } else {
-            //wenn nix zu fressen da ist
-            this.eatCounter = 0;
             this.withoutEat++;
             this.move();
             this.die();
         }
-
-
     }
 
     die() {
-        if (this.withoutEat >= 15) {
-            matrix[this.y][this.x] = 0;
+        if (this.withoutEat >= 12) {
+            matrix[this.y][this.x] = EMPTY;
             for (let i = 0; i < BanelingArr.length; i++) {
                 const BanelingObj = BanelingArr[i];
                 if (BanelingObj.x == this.x && BanelingObj.y == this.y) {
                     BanelingArr.splice(i, 1);
                 }
-
             }
-
         }
     }
 }
