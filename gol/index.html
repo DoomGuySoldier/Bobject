@@ -7,10 +7,16 @@
 </head>
 
 <body>
-	<div><button id= "killButton" style = "margin:10px">Death and Destruction</button><div>
-	<div><button id= "spawnGrazerButton" style = "margin:10px">Spawn Grazer</button><div>
+	<div>
+		<button id= "killButton" style = "margin:10px 10px 0 0; border: 3px solid #1b1b1a;">Death and Destruction</button>
+		<button id= "spawnGrazerButton" style = "margin:10px 10px 0 0; border: 3px solid #ffd000;">Spawn Grazer</button>
+		<button id= "spawnGrassButton" style = "margin:10px 10px 0 0; border: 3px solid #35d500;">Spawn Grass</button>
+	<div>
 	<div>
 		<h2 id="weatherStateMessage"></h2>
+	</div>
+	<div>
+		<h3 id="diedInfo" style="height: 20px; color: maroon;"></h3>
 	</div>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>

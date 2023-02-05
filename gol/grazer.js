@@ -8,50 +8,6 @@ module.exports = class Grazer extends livingCreatures{
         this.y = y;
         this.eatCounter = 0;
         this.withoutEat = 0;
-        // this.color = "yellow";
-        // this.index = 2;
-        this.neighbors = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ]
-    }
-
-    updateNeighbors() {
-        this.neighbors = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
-    }
-
-    chooseCell(symbol) {
-        this.updateNeighbors();
-        let found = [];
-        // wir suchen nach leeren Feldern - Wert x
-        for (let i = 0; i < this.neighbors.length; i++) {
-            const pos = this.neighbors[i];  //[x,y]
-            let posX = pos[0];
-            let posY = pos[1];
-
-            if (posX >= 0 && posX < matrix[0].length && posY >= 0 && posY < matrix.length) {
-                let wert = matrix[posY][posX];
-                if (wert == symbol) {
-                    found.push(pos);
-                }
-            }
-        }
-        return found;
     }
 
     move() {

@@ -1,62 +1,23 @@
-const { CELL: { EMPTY, PREDATOR, ALPHAMALE } } = require("./constants.js");
+const {
+    CELL: { EMPTY, PREDATOR, ALPHAMALE },
+} = require("./constants.js");
 const livingCreatures = require("./livingCreatures.js");
 
-module.exports = class AlphaMale extends livingCreatures{
+module.exports = class AlphaMale extends livingCreatures {
     constructor(x, y) {
         super(x, y);
         this.x = x;
         this.y = y;
         this.eatCounter = 0;
         this.withoutEat = 0;
-        this.neighbors = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ]
-    }
-
-    updateNeighbors() {
-        this.neighbors = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
-    }
-
-    chooseCell(symbol) {
-        this.updateNeighbors();
-        let found = [];
-        // wir suchen nach leeren Feldern - Wert x
-        for (let i = 0; i < this.neighbors.length; i++) {
-            const pos = this.neighbors[i];  //[x,y]
-            let posX = pos[0];
-            let posY = pos[1];
-
-            if (posX >= 0 && posX < matrix[0].length && posY >= 0 && posY < matrix.length) {
-                let wert = matrix[posY][posX];
-                if (wert == symbol) {
-                    found.push(pos);
-                }
-            }
-        }
-        return found;
     }
 
     move() {
         //console.log("Grasfresser bewegung");
         let emptyFields = this.chooseCell(EMPTY);
         if (emptyFields.length > 0) {
-            let newPos = emptyFields[Math.floor(Math.random() * emptyFields.length)]
+            let newPos =
+                emptyFields[Math.floor(Math.random() * emptyFields.length)];
             let newX = newPos[0];
             let newY = newPos[1];
             matrix[newY][newX] = ALPHAMALE;
@@ -70,7 +31,10 @@ module.exports = class AlphaMale extends livingCreatures{
         //finde etwas zu fressen
         let predatorFields = this.chooseCell(PREDATOR);
         if (predatorFields.length > 0) {
-            let predatorPos = predatorFields[Math.floor(Math.random() * predatorFields.length)] //random(predatorFields);
+            let predatorPos =
+                predatorFields[
+                    Math.floor(Math.random() * predatorFields.length)
+                ]; //random(predatorFields);
             let newX = predatorPos[0];
             let newY = predatorPos[1];
             matrix[newY][newX] = ALPHAMALE;
@@ -112,7 +76,8 @@ module.exports = class AlphaMale extends livingCreatures{
         if (this.rounds >= 10) {
             let emptyFields = this.chooseCell(EMPTY);
             if (emptyFields.length > 0) {
-                let theChosenField = emptyFields[Math.floor(Math.random() * emptyFields.length)]
+                let theChosenField =
+                    emptyFields[Math.floor(Math.random() * emptyFields.length)];
                 let newX = theChosenField[0];
                 let newY = theChosenField[1];
                 let AlphaMaleObj = new AlphaMale(newX, newY);
@@ -121,4 +86,4 @@ module.exports = class AlphaMale extends livingCreatures{
             }
         }
     }
-}
+};
